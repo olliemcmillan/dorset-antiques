@@ -1,0 +1,50 @@
+---
+import SiteLayout from "@/layouts/SiteLayout.astro";
+import Section from "@/components/Section.astro";
+import Catalogue from "@/components/Catalogue.astro";
+import Button from "@/components/Button.astro";
+import Icon from "@/components/Icon.astro";
+import {
+  categories,
+  piecesInCategory,
+  type CategorySlug,
+} from "@/data/catalogue";
+
+export function getStaticPaths() {
+  return categories.map((category) => ({
+    params: { category: category.slug },
+    props: { category },
+  }));
+}
+
+const { category } = Astro.props;
+const listed = piecesInCategory(category.slug as CategorySlug);
+---
+
+<SiteLayout
+  title={category.label}
+  description={`${category.description} Browse ${category.label.toLowerCase()} from the Dorset Antiques collection.`}
+>
+  <Section class="page-intro">
+    <p class="eyebrow">Dorset Antiques / {category.label}</p>
+    <h1 class="h2">{category.label}</h1>
+    <p class="muted">{category.description}</p>
+  </Section>
+  <Section class="block cc-tight">
+    <Catalogue pieces={listed} category={category.slug} />
+  </Section>
+  <section class="invitation">
+    <div class="container">
+      <p class="eyebrow">A conversation begins with a piece</p>
+      <h2>Something caught your eye?</h2>
+      <p class="muted">
+        Ask about a piece, request more photographs or tell us what you’re
+        looking for. We’d be pleased to help.
+      </p>
+      <Button href="/enquire">
+        Make an enquiry
+        <Icon name="arrow-right" />
+      </Button>
+    </div>
+  </section>
+</SiteLayout>

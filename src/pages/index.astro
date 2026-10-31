@@ -1,0 +1,211 @@
+---
+import SiteLayout from "@/layouts/SiteLayout.astro";
+import Section from "@/components/Section.astro";
+import Row from "@/components/Row.astro";
+import Col from "@/components/Col.astro";
+import Button from "@/components/Button.astro";
+import Icon from "@/components/Icon.astro";
+import TextLink from "@/components/TextLink.astro";
+import PieceCard from "@/components/PieceCard.astro";
+import { categories, pieces } from "@/data/catalogue";
+import { notes } from "@/data/notes";
+
+const featured = pieces.filter((piece) => piece.featured);
+const steps = [
+  {
+    index: "01",
+    title: "Find your piece",
+    body: "Explore by category. Look closely at the photographs, dimensions and catalogue notes.",
+  },
+  {
+    index: "02",
+    title: "Begin a conversation",
+    body: "Enquire for price, availability, further images or a more detailed condition report.",
+  },
+  {
+    index: "03",
+    title: "Consider the details",
+    body: "We’ll discuss the piece and delivery arrangements directly before you decide.",
+  },
+];
+---
+
+<SiteLayout
+  title="Dorset Antiques"
+  description="Distinctive pieces with a past, selected for the way they live with us today. Glassware, fine art and furniture, offered through a personal enquiry."
+>
+  <Section class="hero">
+    <div class="hero-copy">
+      <div>
+        <p class="eyebrow">Glassware · Fine art · Furniture</p>
+        <h1 class="u-mb-0">Antiques for a<br />considered home.</h1>
+      </div>
+      <div class="hero-intro">
+        <p class="muted">
+          Distinctive pieces with a past, selected for the way they live with us
+          today.
+        </p>
+        <TextLink href="/collection">Explore the collection</TextLink>
+      </div>
+    </div>
+    <img
+      class="hero-media"
+      src="/images/hero.png"
+      alt="A Georgian interior with a mahogany side table, cut-glass decanter and coastal painting"
+      width="1584"
+      height="672"
+      fetchpriority="high"
+    />
+    <div class="hero-caption">
+      <p>THE ART OF LIVING WITH ANTIQUES</p>
+      <p>SELECTED PIECES</p>
+    </div>
+  </Section>
+
+  <Section class="block">
+    <p class="eyebrow">An eye for the exceptional</p>
+    <h2 class="h3 positioning">
+      The quiet brilliance of cut glass. The depth of an oil painting. The
+      warmth of well-lived wood.
+    </h2>
+    <p class="muted positioning-copy">
+      Dorset Antiques brings together glassware, fine art and furniture chosen
+      for their character, craftsmanship and enduring appeal. Each piece is
+      offered through a personal enquiry.
+    </p>
+    <hr class="hairline" />
+  </Section>
+
+  <Section class="block cc-tight">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">The collection</p>
+        <h2 class="h3 u-mb-0">Three ways to discover.</h2>
+      </div>
+    </div>
+    <Row gap="md">
+      {
+        categories.map((category) => (
+          <Col lg={4} md={6} xs={12}>
+            <a class="category-card" href={`/collection/${category.slug}`}>
+              <span class="category-card_media">
+                <img src={category.image} alt={category.imageAlt} />
+              </span>
+              <span class="category-card_title">
+                <span>{category.label}</span>
+                <span class="category-card_arrow" aria-hidden="true">
+                  ↗
+                </span>
+              </span>
+              <span class="muted cc-sm">{category.description}</span>
+            </a>
+          </Col>
+        ))
+      }
+    </Row>
+  </Section>
+
+  <Section class="block">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">A closer look</p>
+        <h2 class="h3 u-mb-0">Selected pieces</h2>
+      </div>
+      <TextLink href="/collection">View all pieces</TextLink>
+    </div>
+    <Row gap="md">
+      {
+        featured.map((piece) => (
+          <Col lg={4} md={6} xs={12}>
+            <PieceCard piece={piece} />
+          </Col>
+        ))
+      }
+    </Row>
+  </Section>
+
+  <section class="focus">
+    <div class="focus_media">
+      <img
+        src="/images/focus-glass.png"
+        alt="Close view of diamond-cut Georgian glass"
+      />
+    </div>
+    <div class="focus_copy">
+      <p class="eyebrow">In focus / Georgian glass</p>
+      <h2 class="focus-title">
+        A little light.<br />Two centuries of character.
+      </h2>
+      <p class="muted">
+        Hand-cut facets catch the light differently with every turn. Discover
+        the quiet detail of our Georgian decanter, from its ringed neck to its
+        richly cut body.
+      </p>
+      <TextLink href="/pieces/georgian-cut-glass-decanter">
+        Discover the decanter
+      </TextLink>
+    </div>
+  </section>
+
+  <Section class="block" id="approach">
+    <p class="eyebrow">A personal way to collect</p>
+    <h2 class="h3">From discovery to enquiry.</h2>
+    <div class="steps">
+      {
+        steps.map((step) => (
+          <article class="step">
+            <div class="step_rule" />
+            <p class="step_index">{step.index}</p>
+            <h3 class="step-title">{step.title}</h3>
+            <p class="muted cc-sm">{step.body}</p>
+          </article>
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section class="block cc-tight" id="journal">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">The journal</p>
+        <h2 class="h3 u-mb-0">Notes on looking closer.</h2>
+      </div>
+    </div>
+    <Row gap="md">
+      {
+        notes.map((note) => (
+          <Col lg={6} xs={12}>
+            <article class="editorial-card">
+              <a href={`/notes/${note.slug}`} class="editorial-card_media">
+                <img src={note.image} alt={note.imageAlt} />
+              </a>
+              <div>
+                <p class="eyebrow">{note.eyebrow}</p>
+                <h3 class="editorial-title">
+                  <a href={`/notes/${note.slug}`}>{note.title}</a>
+                </h3>
+                <p class="muted cc-sm">{note.description}</p>
+                <TextLink href={`/notes/${note.slug}`}>Read the story</TextLink>
+              </div>
+            </article>
+          </Col>
+        ))
+      }
+    </Row>
+  </Section>
+
+  <section class="invitation">
+    <div class="container">
+      <p class="eyebrow">A conversation begins with a piece</p>
+      <h2>Something caught your eye?</h2>
+      <p class="muted">
+        Ask about a piece, request more photographs or tell us what you’re
+        looking for. We’d be pleased to help.
+      </p>
+      <Button href="/enquire">
+        Make an enquiry
+        <Icon name="arrow-right" />
+      </Button>
+    </div>
+  </section>
+</SiteLayout>

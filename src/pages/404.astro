@@ -1,0 +1,19 @@
+---
+import SiteLayout from "@/layouts/SiteLayout.astro";
+import Section from "@/components/Section.astro";
+import TextLink from "@/components/TextLink.astro";
+---
+
+<SiteLayout
+  title="Page not found"
+  description="That page is not in the Dorset Antiques collection."
+>
+  <Section class="page-intro">
+    <p class="eyebrow">404</p>
+    <h1 class="h2">This page has moved on.</h1>
+    <p class="muted">
+      The address doesn’t match a piece or a page in the collection.
+    </p>
+    <TextLink href="/">Return home</TextLink>
+  </Section>
+</SiteLayout>

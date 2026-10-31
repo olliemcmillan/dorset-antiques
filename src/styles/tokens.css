@@ -1,0 +1,364 @@
+/*
+ * Mast design tokens — this file is the theme.
+ *
+ * Everything you'd customize lives in the top half of this file: colors,
+ * fonts, the fluid type scale, spacing, and per-component settings.
+ *
+ * Fluid sizes (type, section padding, card padding) are defined as a
+ * MIN and MAX pair, in rem:
+ *
+ *   --h1-size-min: 2.8;   size at the smallest viewport (20rem / 320px)
+ *   --h1-size-max: 5.5;   size at the largest viewport (90rem / 1440px)
+ *
+ * Adjust the min/max variables only — the clamp() formulas that
+ * interpolate between them are generated in the "computed" section at
+ * the bottom of this file and never need editing.
+ *
+ * Light/dark theming uses native light-dark(): the active scheme comes
+ * from `color-scheme`, set globally on :root and overridable per
+ * element with .u-mode-light / .u-mode-dark.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* ---- Color: Dorset Antiques semantic palette ---- */
+  --color-white: #ffffff;
+  --color-paper: #f8f6f1;
+  --color-stone: #eeebe4;
+  --color-blush: #eee3df;
+  --color-ink: #252521;
+  --color-secondary: #62625b;
+  --color-hairline: #d8d4cb;
+  --color-oxblood: #713c3c;
+  --color-oxblood-hover: #552a2a;
+  --color-error: #a12e32;
+  --color-success: #3f624e;
+  --color-footer-line: #575750;
+
+  /* Kept so shared Mast rules that reference the original names still resolve. */
+  --color-black: var(--color-ink);
+  --color-dark-gray: var(--color-ink);
+  --color-mid-gray-1: var(--color-hairline);
+  --color-mid-gray-2: var(--color-footer-line);
+  --color-light-gray: var(--color-stone);
+  --color-orange: var(--color-oxblood);
+  --color-dark-orange: var(--color-oxblood-hover);
+  --color-yellow: var(--color-blush);
+  --color-blue: var(--color-secondary);
+  --color-red: var(--color-error);
+
+  /* The collection is a single paper scheme. Both modes share it so an
+     OS dark preference cannot invert the identity. */
+  --theme-background: light-dark(var(--color-paper), var(--color-paper));
+  --theme-text: light-dark(var(--color-ink), var(--color-ink));
+  --theme-accent: var(--color-oxblood);
+  --theme-accent-dark: var(--color-oxblood-hover);
+  --theme-border: light-dark(var(--color-hairline), var(--color-hairline));
+
+  /* ---- Fonts ---- */
+  --font-primary: "Inter", Arial, sans-serif;
+  --font-display: "Cormorant Garamond", "Times New Roman", serif;
+
+  /* ---- Fluid range: the viewport bounds (in rem) that every fluid
+     value interpolates between. ---- */
+  --fluid-min: 20;
+  --fluid-max: 90;
+
+  /* ---- Type styles ----
+     Every variable for a given style is grouped with it (as in the
+     Webflow variable panel). Sizes are fluid min/max pairs in rem —
+     adjust the pair; the clamp() interpolation is generated in the
+     computed section at the bottom and never needs touching. ---- */
+
+  /* H1 — display, 51px → 80px */
+  --h1-size-min: 3.1875;
+  --h1-size-max: 5;
+  --h1-weight: 400;
+  --h1-line-height: 1.12;
+  --h1-spacing: -0.02em;
+  --h1-margin: 0;
+
+  /* H2 — page title, 46px → 68px */
+  --h2-size-min: 2.875;
+  --h2-size-max: 4.25;
+  --h2-weight: 400;
+  --h2-line-height: 1.12;
+  --h2-spacing: -0.02em;
+  --h2-margin: 0;
+
+  /* H3 — section, 36px → 48px */
+  --h3-size-min: 2.25;
+  --h3-size-max: 3;
+  --h3-weight: 400;
+  --h3-line-height: 1.12;
+  --h3-spacing: -0.02em;
+  --h3-margin: 0;
+
+  /* H4 — object title, 21px → 26px */
+  --h4-size-min: 1.3125;
+  --h4-size-max: 1.625;
+  --h4-weight: 400;
+  --h4-line-height: 1.12;
+  --h4-spacing: -0.02em;
+  --h4-margin: 0;
+
+  /* H5 */
+  --h5-size-min: 1.1;
+  --h5-size-max: 1.2;
+  --h5-weight: 400;
+  --h5-line-height: 1.4;
+  --h5-spacing: 0em;
+  --h5-margin: 0.5em;
+
+  /* H6 */
+  --h6-size-min: 0.9;
+  --h6-size-max: 1;
+  --h6-weight: 400;
+  --h6-line-height: 1.4;
+  --h6-spacing: 0em;
+  --h6-margin: 0.6em;
+
+  /* Paragraph XL */
+  --paragraph-xl-size-min: 1.2;
+  --paragraph-xl-size-max: 1.5;
+  --paragraph-xl-line-height: 1.4;
+
+  /* Paragraph LG */
+  --paragraph-lg-size-min: 1.1;
+  --paragraph-lg-size-max: 1.25;
+  --paragraph-lg-line-height: 1.5;
+
+  /* Paragraph (base) */
+  --paragraph-size-min: 0.875;
+  --paragraph-size-max: 0.9375;
+  --paragraph-weight: 400;
+  --paragraph-line-height: 1.65;
+  --paragraph-spacing: 0em;
+  --paragraph-margin: 0;
+
+  /* Paragraph SM */
+  --paragraph-sm-size-min: 0.8125;
+  --paragraph-sm-size-max: 0.8125;
+  --paragraph-sm-line-height: 1.65;
+
+  /* Eyebrow — utility, 11px, +1.6px tracking */
+  --eyebrow-size-min: 0.6875;
+  --eyebrow-size-max: 0.6875;
+  --eyebrow-weight: 400;
+  --eyebrow-line-height: 1.4;
+  --eyebrow-spacing: 0.145em;
+  --eyebrow-margin: 0;
+
+  /* ---- Layout ---- */
+  --grid-columns: 12;
+  --grid-gap-main: 24px;
+  --grid-gap-md: 24px;
+  --grid-gap-sm: 8px;
+  --grid-gap-button: 16px;
+  --margin-xs: 0.5em;
+  --margin-sm: 1em;
+  --margin-md: 2em;
+  --margin-lg: 3em;
+  --container-gutter: 1.25rem;
+  --container-max-width: 83rem;
+
+  /* ---- Components: adjust sizes with these min/max pairs ---- */
+  --section-padding-min: 0;
+  --section-padding-max: 0;
+  --card-padding-min: 1;
+  --card-padding-max: 1.5;
+
+  /* ---- Components: fixed settings ---- */
+  --button-padding-vertical: 0;
+  --button-padding-horizontal: 1.375rem;
+  --button-border-radius: 0;
+  --button-font: var(--font-primary);
+  --button-font-size: 0.8125rem;
+  --button-line-height: 1;
+  --button-weight: 500;
+  --button-spacing: 0em;
+
+  --card-border-radius: 0;
+  --card-padding-lg: 1.5rem;
+  --card-padding-sm: 20px;
+
+  --input-margin: 1rem;
+  --input-border-radius: 0;
+  --input-font: var(--font-primary);
+  --input-font-size: 1rem;
+  --input-line-height: 1.5em;
+  --input-weight: 400;
+  --input-spacing: 0em;
+  --input-label-font: var(--font-primary);
+  --input-label-font-size: 0.9rem;
+  --input-label-line-height: 1em;
+  --input-label-weight: 500;
+  --input-label-spacing: 0em;
+
+  /*
+   * ------------------------------------------------------------------
+   * Computed fluid values — generated from the min/max variables above.
+   * Each follows the same pattern:
+   *
+   *   clamp(min, intercept + slope * viewport, max)
+   *
+   * You should never need to edit anything below this line; change the
+   * *-min / *-max variables above instead.
+   * ------------------------------------------------------------------
+   */
+  --fluid-range: calc(var(--fluid-max) - var(--fluid-min));
+
+  --h1-size: clamp(
+    var(--h1-size-min) * 1rem,
+    (
+        var(--h1-size-min) - (var(--h1-size-max) - var(--h1-size-min)) /
+          var(--fluid-range) * var(--fluid-min)
+      ) *
+      1rem + (var(--h1-size-max) - var(--h1-size-min)) / var(--fluid-range) *
+      100vw,
+    var(--h1-size-max) * 1rem
+  );
+  --h2-size: clamp(
+    var(--h2-size-min) * 1rem,
+    (
+        var(--h2-size-min) - (var(--h2-size-max) - var(--h2-size-min)) /
+          var(--fluid-range) * var(--fluid-min)
+      ) *
+      1rem + (var(--h2-size-max) - var(--h2-size-min)) / var(--fluid-range) *
+      100vw,
+    var(--h2-size-max) * 1rem
+  );
+  --h3-size: clamp(
+    var(--h3-size-min) * 1rem,
+    (
+        var(--h3-size-min) - (var(--h3-size-max) - var(--h3-size-min)) /
+          var(--fluid-range) * var(--fluid-min)
+      ) *
+      1rem + (var(--h3-size-max) - var(--h3-size-min)) / var(--fluid-range) *
+      100vw,
+    var(--h3-size-max) * 1rem
+  );
+  --h4-size: clamp(
+    var(--h4-size-min) * 1rem,
+    (
+        var(--h4-size-min) - (var(--h4-size-max) - var(--h4-size-min)) /
+          var(--fluid-range) * var(--fluid-min)
+      ) *
+      1rem + (var(--h4-size-max) - var(--h4-size-min)) / var(--fluid-range) *
+      100vw,
+    var(--h4-size-max) * 1rem
+  );
+  --h5-size: clamp(
+    var(--h5-size-min) * 1rem,
+    (
+        var(--h5-size-min) - (var(--h5-size-max) - var(--h5-size-min)) /
+          var(--fluid-range) * var(--fluid-min)
+      ) *
+      1rem + (var(--h5-size-max) - var(--h5-size-min)) / var(--fluid-range) *
+      100vw,
+    var(--h5-size-max) * 1rem
+  );
+  --h6-size: clamp(
+    var(--h6-size-min) * 1rem,
+    (
+        var(--h6-size-min) - (var(--h6-size-max) - var(--h6-size-min)) /
+          var(--fluid-range) * var(--fluid-min)
+      ) *
+      1rem + (var(--h6-size-max) - var(--h6-size-min)) / var(--fluid-range) *
+      100vw,
+    var(--h6-size-max) * 1rem
+  );
+  --paragraph-xl-size: clamp(
+    var(--paragraph-xl-size-min) * 1rem,
+    (
+        var(--paragraph-xl-size-min) -
+          (var(--paragraph-xl-size-max) - var(--paragraph-xl-size-min)) /
+          var(--fluid-range) * var(--fluid-min)
+      ) *
+      1rem + (var(--paragraph-xl-size-max) - var(--paragraph-xl-size-min)) /
+      var(--fluid-range) * 100vw,
+    var(--paragraph-xl-size-max) * 1rem
+  );
+  --paragraph-lg-size: clamp(
+    var(--paragraph-lg-size-min) * 1rem,
+    (
+        var(--paragraph-lg-size-min) -
+          (var(--paragraph-lg-size-max) - var(--paragraph-lg-size-min)) /
+          var(--fluid-range) * var(--fluid-min)
+      ) *
+      1rem + (var(--paragraph-lg-size-max) - var(--paragraph-lg-size-min)) /
+      var(--fluid-range) * 100vw,
+    var(--paragraph-lg-size-max) * 1rem
+  );
+  --paragraph-size: clamp(
+    var(--paragraph-size-min) * 1rem,
+    (
+        var(--paragraph-size-min) -
+          (var(--paragraph-size-max) - var(--paragraph-size-min)) /
+          var(--fluid-range) * var(--fluid-min)
+      ) *
+      1rem + (var(--paragraph-size-max) - var(--paragraph-size-min)) /
+      var(--fluid-range) * 100vw,
+    var(--paragraph-size-max) * 1rem
+  );
+  --paragraph-sm-size: clamp(
+    var(--paragraph-sm-size-min) * 1rem,
+    (
+        var(--paragraph-sm-size-min) -
+          (var(--paragraph-sm-size-max) - var(--paragraph-sm-size-min)) /
+          var(--fluid-range) * var(--fluid-min)
+      ) *
+      1rem + (var(--paragraph-sm-size-max) - var(--paragraph-sm-size-min)) /
+      var(--fluid-range) * 100vw,
+    var(--paragraph-sm-size-max) * 1rem
+  );
+  --eyebrow-size: clamp(
+    var(--eyebrow-size-min) * 1rem,
+    (
+        var(--eyebrow-size-min) -
+          (var(--eyebrow-size-max) - var(--eyebrow-size-min)) /
+          var(--fluid-range) * var(--fluid-min)
+      ) *
+      1rem + (var(--eyebrow-size-max) - var(--eyebrow-size-min)) /
+      var(--fluid-range) * 100vw,
+    var(--eyebrow-size-max) * 1rem
+  );
+  --section-padding: clamp(
+    var(--section-padding-min) * 1rem,
+    (
+        var(--section-padding-min) -
+          (var(--section-padding-max) - var(--section-padding-min)) /
+          var(--fluid-range) * var(--fluid-min)
+      ) *
+      1rem + (var(--section-padding-max) - var(--section-padding-min)) /
+      var(--fluid-range) * 100vw,
+    var(--section-padding-max) * 1rem
+  );
+  --card-padding: clamp(
+    var(--card-padding-min) * 1rem,
+    (
+        var(--card-padding-min) -
+          (var(--card-padding-max) - var(--card-padding-min)) /
+          var(--fluid-range) * var(--fluid-min)
+      ) *
+      1rem + (var(--card-padding-max) - var(--card-padding-min)) /
+      var(--fluid-range) * 100vw,
+    var(--card-padding-max) * 1rem
+  );
+}
+
+/* Force a subtree into one scheme; light-dark() values re-resolve.
+   Deliberate exception to "u-* lives in the utilities layer": these set
+   the scheme context tokens resolve against, so they belong here. */
+.u-mode-light {
+  color-scheme: light;
+  background-color: var(--theme-background);
+  color: var(--theme-text);
+}
+
+.u-mode-dark {
+  color-scheme: dark;
+  background-color: var(--theme-background);
+  color: var(--theme-text);
+}

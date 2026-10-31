@@ -1,0 +1,56 @@
+---
+import Wordmark from "@/components/Wordmark.astro";
+import Icon from "@/components/Icon.astro";
+import TextLink from "@/components/TextLink.astro";
+import { categories } from "@/data/catalogue";
+
+const path = Astro.url.pathname;
+const links = [
+  { href: "/collection", label: "Collection", current: path === "/collection" },
+  ...categories.map((category) => ({
+    href: `/collection/${category.slug}`,
+    label: category.label,
+    current: path === `/collection/${category.slug}`,
+  })),
+  {
+    href: "/#approach",
+    label: "Our approach",
+    current: false,
+  },
+];
+---
+
+<header class="nav">
+  <a id="skip-link" href="#main" class="nav-skip-link">Skip to Main Content</a>
+  <div class="container cc-nav">
+    <a href="/" class="nav-logo_link" aria-label="Dorset Antiques, home">
+      <Wordmark />
+    </a>
+    <button type="button" class="nav-menu_btn" aria-label="Open menu">
+      <span class="nav-menu_open-label">Menu</span>
+      <span class="nav-menu_close-label">Close</span>
+      <Icon name="list" class="nav-menu_icon cc-open-icon" />
+      <Icon name="x" class="nav-menu_icon cc-close-icon" />
+    </button>
+    <nav class="nav-menu" aria-label="Main">
+      <div class="nav-menu_container">
+        {
+          links.map((link) => (
+            <a
+              href={link.href}
+              class="nav-link"
+              aria-current={link.current ? "page" : undefined}
+            >
+              {link.label}
+            </a>
+          ))
+        }
+        <TextLink href="/enquire">Make an enquiry</TextLink>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script>
+  import "@/scripts/nav.ts";
+</script>

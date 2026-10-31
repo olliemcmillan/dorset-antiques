@@ -1,0 +1,166 @@
+---
+import SiteLayout from "@/layouts/SiteLayout.astro";
+import Section from "@/components/Section.astro";
+import Row from "@/components/Row.astro";
+import Col from "@/components/Col.astro";
+import Button from "@/components/Button.astro";
+import Icon from "@/components/Icon.astro";
+import PieceCard from "@/components/PieceCard.astro";
+import {
+  availabilityLabel,
+  categoryLabel,
+  deliveryNote,
+  pieces,
+  relatedPieces,
+} from "@/data/catalogue";
+
+export function getStaticPaths() {
+  return pieces.map((piece) => ({
+    params: { slug: piece.slug },
+    props: { piece },
+  }));
+}
+
+const { piece } = Astro.props;
+const related = relatedPieces(piece.slug);
+const enquiryHref = `/enquire/${piece.reference.toLowerCase()}`;
+---
+
+<SiteLayout title={piece.title} description={piece.description}>
+  <Section class="block">
+    <p class="breadcrumb">
+      <a href="/collection">Collection</a>
+      <span aria-hidden="true"> / </span>
+      <a href={`/collection/${piece.category}`}>
+        {categoryLabel(piece.category)}
+      </a>
+      <span aria-hidden="true"> / </span>
+      <span>{piece.title}</span>
+    </p>
+    <div class="piece-layout">
+      <div class="piece-gallery">
+        <img
+          class="piece-gallery_main"
+          src={piece.gallery[0].src}
+          alt={piece.gallery[0].alt}
+          fetchpriority="high"
+        />
+        {
+          piece.gallery.length > 1 && (
+            <div class="piece-gallery_details">
+              {piece.gallery.slice(1).map((image) => (
+                <div class="piece-gallery_detail">
+                  <img src={image.src} alt={image.alt} />
+                </div>
+              ))}
+            </div>
+          )
+        }
+        {
+          piece.galleryCaption && (
+            <div class="gallery-caption">
+              <p>{piece.galleryCaption}</p>
+              <p>{piece.gallery.length} photographs</p>
+            </div>
+          )
+        }
+      </div>
+      <div>
+        <p class="eyebrow">
+          {categoryLabel(piece.category)} / {piece.reference}
+        </p>
+        <h1 class="piece-title">{piece.title}</h1>
+        <p class="piece-summary">{piece.summary}</p>
+        <p class:list={["availability", `cc-${piece.availability}`]}>
+          <span class="availability_marker" aria-hidden="true"></span>
+          {availabilityLabel[piece.availability]}
+        </p>
+        <hr class="hairline" />
+        <p class="piece-price">Price on enquiry</p>
+        <p class="muted stack">{piece.description}</p>
+        <div class="stack-lg">
+          <Button href={enquiryHref} full>
+            Enquire about this piece
+            <Icon name="arrow-right" />
+          </Button>
+        </div>
+        <p class="form-note stack">
+          Ask for the price, further photographs or a detailed condition report.
+          No payment is taken online.
+        </p>
+        <dl class="piece-facts">
+          {
+            piece.facts.map((fact) => (
+              <div>
+                <dt>{fact.label}</dt>
+                <dd>{fact.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </div>
+
+    <div class="note-block">
+      <p class="eyebrow">Condition & character</p>
+      <p class="muted">{piece.condition}</p>
+    </div>
+    <div class="note-block">
+      <p class="eyebrow">Delivery & collection</p>
+      <p class="muted">{deliveryNote}</p>
+    </div>
+
+    {
+      piece.history && (
+        <div class="note-block history-intro">
+          <p class="eyebrow">Illustrative sample history</p>
+          <h2>A sample timeline of the piece</h2>
+          <p class="muted">
+            This is a narrative interpretation of the object’s journey. Verified
+            provenance was not supplied for {piece.reference}, so the timeline
+            below is illustrative rather than documented fact. It is intended to
+            evoke the kind of story an object like this might carry.
+          </p>
+          <div class="timeline">
+            {piece.history.map((moment, index) => (
+              <article class="timeline_row">
+                <div class="timeline_mark" aria-hidden="true">
+                  <span class="timeline_dot" />
+                  {index < piece.history!.length - 1 && (
+                    <span class="timeline_line" />
+                  )}
+                </div>
+                <div>
+                  <p class="eyebrow timeline_when">{moment.when}</p>
+                  <h3 class="h4">{moment.title}</h3>
+                  <p class="muted">{moment.body}</p>
+                  {index === piece.history!.length - 1 && (
+                    <div class="stack-sm">
+                      <Button href={enquiryHref} full>
+                        Enquire about becoming the next custodian
+                        <Icon name="arrow-right" />
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      )
+    }
+  </Section>
+
+  <Section class="block">
+    <h2 class="h3">You may also be drawn to…</h2>
+    <Row gap="md">
+      {
+        related.map((item) => (
+          <Col lg={4} md={6} xs={12}>
+            <PieceCard piece={item} />
+          </Col>
+        ))
+      }
+    </Row>
+  </Section>
+</SiteLayout>

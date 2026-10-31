@@ -1,0 +1,41 @@
+---
+import SiteLayout from "@/layouts/SiteLayout.astro";
+import Section from "@/components/Section.astro";
+import Row from "@/components/Row.astro";
+import Col from "@/components/Col.astro";
+import TextLink from "@/components/TextLink.astro";
+import { notes } from "@/data/notes";
+---
+
+<SiteLayout
+  title="Collecting notes"
+  description="Notes on looking closer — short essays on patina, paintings and living with antiques."
+>
+  <Section class="page-intro">
+    <p class="eyebrow">The journal</p>
+    <h1 class="h2">Notes on looking closer.</h1>
+  </Section>
+  <Section class="block cc-tight">
+    <Row gap="md">
+      {
+        notes.map((note) => (
+          <Col lg={6} xs={12}>
+            <article class="editorial-card">
+              <a href={`/notes/${note.slug}`} class="editorial-card_media">
+                <img src={note.image} alt={note.imageAlt} />
+              </a>
+              <div>
+                <p class="eyebrow">{note.eyebrow}</p>
+                <h2 class="editorial-title">
+                  <a href={`/notes/${note.slug}`}>{note.title}</a>
+                </h2>
+                <p class="muted cc-sm">{note.description}</p>
+                <TextLink href={`/notes/${note.slug}`}>Read the story</TextLink>
+              </div>
+            </article>
+          </Col>
+        ))
+      }
+    </Row>
+  </Section>
+</SiteLayout>

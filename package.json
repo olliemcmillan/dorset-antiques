@@ -1,0 +1,52 @@
+{
+  "name": "dorset-antiques",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Dorset Antiques, a private collection website built with Mast for Astro",
+  "keywords": [
+    "astro",
+    "css-framework",
+    "design-system",
+    "components",
+    "mast",
+    "webflow"
+  ],
+  "homepage": "https://github.com/CoreyMoen/mast-astro#readme",
+  "bugs": {
+    "url": "https://github.com/CoreyMoen/mast-astro/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CoreyMoen/mast-astro.git"
+  },
+  "license": "MIT",
+  "author": "Corey Moen",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "check": "astro check",
+    "build": "astro build",
+    "preview": "astro preview",
+    "deploy": "astro build && wrangler deploy",
+    "astro": "astro",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "@phosphor-icons/core": "^2.1.1",
+    "astro": "^7.2.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@fontsource/cormorant-garamond": "^5.3.0",
+    "@fontsource/inter": "^5.3.0",
+    "@types/node": "^26.2.0",
+    "playwright-core": "^1.62.1",
+    "prettier": "^3.9.6",
+    "prettier-plugin-astro": "^0.14.1",
+    "typescript": "^6.0.3",
+    "wrangler": "^4.156.0"
+  }
+}

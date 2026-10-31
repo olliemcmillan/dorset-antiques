@@ -1,0 +1,21 @@
+---
+import SiteLayout from "@/layouts/SiteLayout.astro";
+import EnquiryView from "@/components/EnquiryView.astro";
+import { pieces } from "@/data/catalogue";
+
+export function getStaticPaths() {
+  return pieces.map((piece) => ({
+    params: { reference: piece.reference.toLowerCase() },
+    props: { piece },
+  }));
+}
+
+const { piece } = Astro.props;
+---
+
+<SiteLayout
+  title={`Enquire about ${piece.title}`}
+  description={`Enquire about ${piece.title}, ${piece.reference}. No payment is taken online.`}
+>
+  <EnquiryView piece={piece} />
+</SiteLayout>

@@ -1,0 +1,40 @@
+---
+import SiteLayout from "@/layouts/SiteLayout.astro";
+import Section from "@/components/Section.astro";
+import Catalogue from "@/components/Catalogue.astro";
+import Button from "@/components/Button.astro";
+import Icon from "@/components/Icon.astro";
+import { pieces } from "@/data/catalogue";
+---
+
+<SiteLayout
+  title="The collection"
+  description="Glassware, fine art and furniture, selected for character and craftsmanship. Discover a piece and enquire for its price and further details."
+>
+  <Section class="page-intro">
+    <p class="eyebrow">Dorset Antiques / Collection</p>
+    <h1 class="h2">The collection</h1>
+    <p class="muted">
+      Glassware, fine art and furniture, selected for character and
+      craftsmanship. Discover a piece and enquire for its price and further
+      details.
+    </p>
+  </Section>
+  <Section class="block cc-tight">
+    <Catalogue pieces={pieces} />
+  </Section>
+  <section class="invitation">
+    <div class="container">
+      <p class="eyebrow">A conversation begins with a piece</p>
+      <h2>Something caught your eye?</h2>
+      <p class="muted">
+        Ask about a piece, request more photographs or tell us what you’re
+        looking for. We’d be pleased to help.
+      </p>
+      <Button href="/enquire">
+        Make an enquiry
+        <Icon name="arrow-right" />
+      </Button>
+    </div>
+  </section>
+</SiteLayout>

@@ -1,0 +1,134 @@
+---
+import Section from "@/components/Section.astro";
+import TextLink from "@/components/TextLink.astro";
+import Icon from "@/components/Icon.astro";
+import { categoryLabel, type Piece } from "@/data/catalogue";
+
+interface Props {
+  piece?: Piece;
+}
+
+const { piece } = Astro.props;
+const message = piece
+  ? `I’m interested in the ${piece.title} (${piece.reference}). Please could you share the price and further condition details?`
+  : "Tell us what you’re looking for, or the piece you’d like to know more about.";
+---
+
+<Section class="page-intro">
+  <p class="eyebrow">
+    {piece ? `Enquiries / ${piece.reference}` : "Enquiries"}
+  </p>
+  <h1 class="h2">
+    {piece ? "Let’s talk about this piece." : "Let’s talk."}
+  </h1>
+  <p class="muted">
+    For price, further details or a closer look, send us a message below.
+  </p>
+</Section>
+
+<Section class="block cc-tight">
+  <div class="enquiry-layout">
+    <aside>
+      {
+        piece && (
+          <div class="item-summary">
+            <img src={piece.image} alt={piece.imageAlt} />
+            <div>
+              <p class="eyebrow">
+                {piece.reference} / {categoryLabel(piece.category)}
+              </p>
+              <h2 class="h4">{piece.title}</h2>
+              <p class="muted cc-sm">{piece.summary}</p>
+              <p class="form-note">Price on enquiry</p>
+            </div>
+          </div>
+        )
+      }
+      <div class="enquiry-next">
+        <p class="eyebrow">A personal response</p>
+        <p class="muted cc-sm">
+          We’ll confirm availability and price, answer your questions and
+          discuss delivery if you wish to proceed.
+        </p>
+        <p class="form-note">
+          An enquiry is simply a conversation. It does not reserve a piece or
+          commit you to a purchase.
+        </p>
+      </div>
+      {
+        piece && (
+          <p class="return-link">
+            <a href={`/pieces/${piece.slug}`}>← Return to the piece</a>
+          </p>
+        )
+      }
+    </aside>
+
+    <div>
+      <form class="enquiry-form" data-enquiry>
+        <div class="input-group">
+          <label class="input-label" for="name">Name *</label>
+          <input
+            class="input"
+            id="name"
+            name="name"
+            type="text"
+            required
+            autocomplete="name"
+            placeholder="Your full name"
+          />
+        </div>
+        <div class="input-group">
+          <label class="input-label" for="email">Email *</label>
+          <input
+            class="input"
+            id="email"
+            name="email"
+            type="email"
+            required
+            autocomplete="email"
+            placeholder="you@example.com"
+          />
+        </div>
+        <div class="input-group cc-textarea">
+          <label class="input-label" for="message">Message *</label>
+          <textarea
+            class="input"
+            id="message"
+            name="message"
+            required
+            placeholder={message}></textarea>
+        </div>
+        <p class="form-note">
+          Your details will only be used to respond to this enquiry. Read our
+          <a href="/privacy">privacy notice</a>. Fields marked * are required.
+        </p>
+        <button class="button cc-full" type="submit">
+          Send enquiry
+          <Icon name="arrow-right" />
+        </button>
+        <p class="form-note">
+          No payment is taken here. We’ll discuss availability, price and
+          delivery with you directly.
+        </p>
+      </form>
+
+      <div class="confirmation" data-enquiry-confirmation hidden tabindex="-1">
+        <p class="eyebrow">Sent confirmation</p>
+        <h2>Thank you for your enquiry.</h2>
+        <p class="muted cc-sm">
+          {
+            piece
+              ? `Your message about the ${piece.title} (${piece.reference}) has been sent. We’ll reply to the email address you provided.`
+              : "Your message has been sent. We’ll reply to the email address you provided."
+          }
+        </p>
+        <TextLink href="/collection">Return to the collection</TextLink>
+      </div>
+    </div>
+  </div>
+</Section>
+
+<script>
+  import "@/scripts/enquire.ts";
+</script>

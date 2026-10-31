@@ -1,0 +1,35 @@
+---
+import SiteLayout from "@/layouts/SiteLayout.astro";
+import Section from "@/components/Section.astro";
+import TextLink from "@/components/TextLink.astro";
+import { noteBySlug, notes } from "@/data/notes";
+
+export function getStaticPaths() {
+  return notes.map((note) => ({
+    params: { slug: note.slug },
+    props: { note },
+  }));
+}
+
+const { note } = Astro.props;
+if (!noteBySlug(note.slug)) {
+  throw new Error(`Missing note ${note.slug}`);
+}
+---
+
+<SiteLayout title={note.title} description={note.description}>
+  <Section class="page-intro">
+    <p class="eyebrow">{note.eyebrow}</p>
+    <h1 class="h2">{note.title}</h1>
+    <p class="muted">{note.description}</p>
+    <div class="note-hero">
+      <img src={note.image} alt={note.imageAlt} />
+    </div>
+  </Section>
+  <Section class="block cc-tight">
+    <div class="prose">
+      {note.paragraphs.map((paragraph) => <p class="muted">{paragraph}</p>)}
+      <TextLink href="/notes">All collecting notes</TextLink>
+    </div>
+  </Section>
+</SiteLayout>

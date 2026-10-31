@@ -1,0 +1,79 @@
+---
+import Row from "@/components/Row.astro";
+import Col from "@/components/Col.astro";
+import PieceCard from "@/components/PieceCard.astro";
+import Icon from "@/components/Icon.astro";
+import { categories, type CategorySlug, type Piece } from "@/data/catalogue";
+
+interface Props {
+  pieces: Piece[];
+  category?: CategorySlug;
+}
+
+const { pieces, category } = Astro.props;
+const filters = [
+  { href: "/collection", label: "All pieces", slug: undefined },
+  ...categories.map((item) => ({
+    href: `/collection/${item.slug}`,
+    label: item.label,
+    slug: item.slug,
+  })),
+];
+const categoryName = category
+  ? categories.find((item) => item.slug === category)?.label
+  : "All categories";
+---
+
+<div class="catalogue" data-catalogue>
+  <div class="filters" role="navigation" aria-label="Categories">
+    {
+      filters.map((filter) => (
+        <a
+          href={filter.href}
+          aria-current={filter.slug === category ? "page" : undefined}
+        >
+          {filter.label}
+        </a>
+      ))
+    }
+  </div>
+  <div class="catalogue_rule"></div>
+  <div class="catalogue_tools">
+    <p>
+      {pieces.length}
+      {pieces.length === 1 ? " piece" : " pieces"} / {categoryName}
+    </p>
+    <label class="catalogue_sort">
+      <span class="u-sr-only">Sort pieces</span>
+      <select data-catalogue-sort>
+        <option value="recent">Recently added</option>
+        <option value="title">Title</option>
+      </select>
+      <Icon name="caret-down" />
+    </label>
+  </div>
+  <Row gap="md" class="catalogue_grid">
+    {
+      pieces.map((piece, index) => (
+        <Col
+          lg={4}
+          md={6}
+          xs={12}
+          data-piece
+          data-order={index}
+          data-title={piece.title}
+        >
+          <PieceCard piece={piece} />
+        </Col>
+      ))
+    }
+  </Row>
+  <p class="catalogue_end">
+    You’ve viewed all {pieces.length}
+    {pieces.length === 1 ? " piece" : " pieces"}.
+  </p>
+</div>
+
+<script>
+  import "@/scripts/catalogue.ts";
+</script>

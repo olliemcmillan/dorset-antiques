@@ -1,0 +1,12 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<span class:list={["wordmark", className]}>
+  <span class="wordmark_name">Dorset</span>
+  <span class="wordmark_trade">Antiques</span>
+</span>

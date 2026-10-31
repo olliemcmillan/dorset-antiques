@@ -1,0 +1,47 @@
+---
+import "@/styles/global.css";
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/500.css";
+import "@fontsource/cormorant-garamond/400.css";
+import { SITE_TITLE } from "@/consts.ts";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+
+// "Page · Mast" everywhere except the cover, which is just the site name.
+const fullTitle = title === SITE_TITLE ? title : `${title} · ${SITE_TITLE}`;
+---
+
+<meta charset="utf-8" />
+<title>{fullTitle}</title>
+<meta content={title} property="og:title" />
+<meta content={SITE_TITLE} property="og:site_name" />
+<meta content="website" property="og:type" />
+<meta content="summary" name="twitter:card" />
+<meta content={title} name="twitter:title" />
+{description && <meta content={description} name="description" />}
+{description && <meta content={description} property="og:description" />}
+{description && <meta content={description} name="twitter:description" />}
+<meta content="width=device-width, initial-scale=1" name="viewport" />
+{/* Browser chrome color per scheme, matching the theme tokens. */}
+<meta content="#f8f6f1" name="theme-color" />
+<link href="/favicon.ico" rel="icon" sizes="48x48 32x32 16x16" />
+<link href="/webclip.png" rel="apple-touch-icon" />
+
+<script is:inline>
+  // Mark JS availability (gates scroll animations) and apply the saved
+  // theme before first paint to avoid a flash of the wrong mode.
+  (function () {
+    var docEl = document.documentElement;
+    docEl.classList.add("js");
+    function applyMode(isLight) {
+      docEl.classList.toggle("u-mode-light", isLight);
+      docEl.classList.toggle("u-mode-dark", !isLight);
+    }
+    applyMode(true);
+  })();
+</script>
