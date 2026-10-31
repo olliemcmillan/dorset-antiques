@@ -1,29 +1,35 @@
 ---
-import { availabilityLabel, categoryLabel, type Piece } from "@/data/catalogue";
+import {
+  availabilityLabel,
+  categoryLabel,
+  productSrc,
+  type Product,
+} from "@/lib/products";
 
 interface Props {
-  piece: Piece;
+  product: Product;
 }
 
-const { piece } = Astro.props;
+const { product } = Astro.props;
+const { data } = product;
 ---
 
-<a class="piece-card" href={`/pieces/${piece.slug}`}>
+<a class="piece-card" href={`/pieces/${product.id}`}>
   <span class="piece-card_media">
-    <img src={piece.image} alt={piece.imageAlt} loading="lazy" />
+    <img src={productSrc(data.image)} alt={data.imageAlt} loading="lazy" />
   </span>
   <span class="piece-card_body">
     <span class="eyebrow">
-      {categoryLabel(piece.category)} / {piece.reference}
+      {categoryLabel(data.category)} / {data.reference}
     </span>
-    <span class="piece-card_title">{piece.title}</span>
-    <span class="piece-card_summary">{piece.summary}</span>
+    <span class="piece-card_title">{data.title}</span>
+    <span class="piece-card_summary">{data.summary}</span>
     <span class="piece-card_meta">
       <span>Price on enquiry</span>
       <span class="piece-card_sep" aria-hidden="true">/</span>
-      <span class:list={["availability", `cc-${piece.availability}`]}>
+      <span class:list={["availability", `cc-${data.availability}`]}>
         <span class="availability_marker" aria-hidden="true"></span>
-        {availabilityLabel[piece.availability]}
+        {availabilityLabel[data.availability]}
       </span>
     </span>
   </span>

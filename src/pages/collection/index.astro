@@ -4,14 +4,16 @@ import Section from "@/components/Section.astro";
 import Catalogue from "@/components/Catalogue.astro";
 import Button from "@/components/Button.astro";
 import Icon from "@/components/Icon.astro";
-import { pieces } from "@/data/catalogue";
+import { getProducts } from "@/lib/products";
+
+const products = await getProducts();
 ---
 
 <SiteLayout
   title="The collection"
   description="Glassware, fine art and furniture, selected for character and craftsmanship. Discover a piece and enquire for its price and further details."
 >
-  <Section class="page-intro">
+  <Section class="page-intro" data-title-reveal>
     <p class="eyebrow">Dorset Antiques / Collection</p>
     <h1 class="h2">The collection</h1>
     <p class="muted">
@@ -20,11 +22,11 @@ import { pieces } from "@/data/catalogue";
       details.
     </p>
   </Section>
-  <Section class="block cc-tight">
-    <Catalogue pieces={pieces} />
+  <Section class="block">
+    <Catalogue products={products} />
   </Section>
   <section class="invitation">
-    <div class="container">
+    <div class="container" data-title-reveal>
       <p class="eyebrow">A conversation begins with a piece</p>
       <h2>Something caught your eye?</h2>
       <p class="muted">

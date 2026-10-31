@@ -27,8 +27,4 @@ function initCatalogue() {
   select.addEventListener("change", apply);
 }
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initCatalogue);
-} else {
-  initCatalogue();
-}
+document.addEventListener("astro:page-load", initCatalogue);

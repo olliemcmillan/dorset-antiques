@@ -117,9 +117,15 @@ h6,
 /* ---- Navigation ---- */
 
 .nav {
+  align-items: center;
+  display: flex;
   min-height: 5.5rem;
-  padding-top: 0;
-  padding-bottom: 0;
+  padding-block: 0;
+}
+
+.nav > .container {
+  flex: 1;
+  min-width: 0;
 }
 
 .nav-logo_link {
@@ -369,7 +375,7 @@ h6,
   gap: 1rem;
 }
 
-.category-card_title span {
+.category-card_title > span {
   font-family: var(--font-display);
   font-size: clamp(1.75rem, 1.4rem + 1vw, 2rem);
   letter-spacing: -0.02em;
@@ -378,8 +384,13 @@ h6,
 
 .category-card_arrow {
   color: var(--color-oxblood);
+  flex: none;
+}
+
+.category-card_arrow .icon {
   font-size: 1.5rem;
-  line-height: 1;
+  height: 1.5rem;
+  width: 1.5rem;
 }
 
 .piece-card {
@@ -1031,6 +1042,7 @@ textarea.input {
 
 textarea.input {
   min-height: 9.5rem;
+  padding-top: 2.5rem;
   resize: vertical;
 }
 
@@ -1122,4 +1134,79 @@ textarea.input:focus-visible,
 
 .legal p + p {
   margin-top: 1rem;
+}
+
+/* ---- Page transitions ---- */
+
+html {
+  background-color: var(--theme-background);
+}
+
+@keyframes page-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) {
+    animation: 220ms ease both page-fade-out;
+  }
+
+  ::view-transition-new(root) {
+    animation: 320ms ease 220ms both page-fade-in;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
+/* Title blocks: eyebrow, then heading, then paragraph, then button. */
+@keyframes title-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-title-reveal]:not(.is-in) :is(
+      .eyebrow,
+      h1,
+      h2,
+      h3,
+      h4,
+      p.muted,
+      p.piece-summary,
+      .rich-text,
+      .text-link,
+      .button
+    ) {
+    opacity: 0;
+  }
+
+  html.js [data-title-reveal].is-in .eyebrow {
+    animation: title-fade-in 0.7s cubic-bezier(0.33, 1, 0.68, 1) both;
+  }
+
+  html.js [data-title-reveal].is-in :is(h1, h2, h3, h4) {
+    animation: title-fade-in 0.7s cubic-bezier(0.33, 1, 0.68, 1) 0.12s both;
+  }
+
+  html.js [data-title-reveal].is-in :is(p.muted, p.piece-summary, .rich-text) {
+    animation: title-fade-in 0.7s cubic-bezier(0.33, 1, 0.68, 1) 0.24s both;
+  }
+
+  html.js [data-title-reveal].is-in :is(.text-link, .button) {
+    animation: title-fade-in 0.7s cubic-bezier(0.33, 1, 0.68, 1) 0.36s both;
+  }
 }

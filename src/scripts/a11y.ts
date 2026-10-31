@@ -24,8 +24,4 @@ function initA11yHelpers() {
   });
 }
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initA11yHelpers);
-} else {
-  initA11yHelpers();
-}
+document.addEventListener("astro:page-load", initA11yHelpers);

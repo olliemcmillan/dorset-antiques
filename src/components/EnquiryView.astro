@@ -2,19 +2,20 @@
 import Section from "@/components/Section.astro";
 import TextLink from "@/components/TextLink.astro";
 import Icon from "@/components/Icon.astro";
-import { categoryLabel, type Piece } from "@/data/catalogue";
+import { categoryLabel, productSrc, type Product } from "@/lib/products";
 
 interface Props {
-  piece?: Piece;
+  product?: Product;
 }
 
-const { piece } = Astro.props;
+const { product } = Astro.props;
+const piece = product?.data;
 const message = piece
   ? `I’m interested in the ${piece.title} (${piece.reference}). Please could you share the price and further condition details?`
   : "Tell us what you’re looking for, or the piece you’d like to know more about.";
 ---
 
-<Section class="page-intro">
+<Section class="page-intro" data-title-reveal>
   <p class="eyebrow">
     {piece ? `Enquiries / ${piece.reference}` : "Enquiries"}
   </p>
@@ -32,7 +33,7 @@ const message = piece
       {
         piece && (
           <div class="item-summary">
-            <img src={piece.image} alt={piece.imageAlt} />
+            <img src={productSrc(piece.image)} alt={piece.imageAlt} />
             <div>
               <p class="eyebrow">
                 {piece.reference} / {categoryLabel(piece.category)}
@@ -58,7 +59,7 @@ const message = piece
       {
         piece && (
           <p class="return-link">
-            <a href={`/pieces/${piece.slug}`}>← Return to the piece</a>
+            <a href={`/pieces/${product.id}`}>← Return to the piece</a>
           </p>
         )
       }
@@ -100,7 +101,7 @@ const message = piece
             placeholder={message}></textarea>
         </div>
         <p class="form-note">
-          Your details will only be used to respond to this enquiry. Read our
+          Your details will only be used to respond to this enquiry. Read our{" "}
           <a href="/privacy">privacy notice</a>. Fields marked * are required.
         </p>
         <button class="button cc-full" type="submit">

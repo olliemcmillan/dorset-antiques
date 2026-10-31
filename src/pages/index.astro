@@ -7,10 +7,12 @@ import Button from "@/components/Button.astro";
 import Icon from "@/components/Icon.astro";
 import TextLink from "@/components/TextLink.astro";
 import PieceCard from "@/components/PieceCard.astro";
-import { categories, pieces } from "@/data/catalogue";
+import { categories, getProducts } from "@/lib/products";
 import { notes } from "@/data/notes";
 
-const featured = pieces.filter((piece) => piece.featured);
+const featured = (await getProducts()).filter(
+  (product) => product.data.featured,
+);
 const steps = [
   {
     index: "01",
@@ -35,7 +37,7 @@ const steps = [
   description="Distinctive pieces with a past, selected for the way they live with us today. Glassware, fine art and furniture, offered through a personal enquiry."
 >
   <Section class="hero">
-    <div class="hero-copy">
+    <div class="hero-copy" data-title-reveal>
       <div>
         <p class="eyebrow">Glassware · Fine art · Furniture</p>
         <h1 class="u-mb-0">Antiques for a<br />considered home.</h1>
@@ -63,6 +65,7 @@ const steps = [
   </Section>
 
   <Section class="block">
+    <div data-title-reveal>
     <p class="eyebrow">An eye for the exceptional</p>
     <h2 class="h3 positioning">
       The quiet brilliance of cut glass. The depth of an oil painting. The
@@ -73,11 +76,12 @@ const steps = [
       for their character, craftsmanship and enduring appeal. Each piece is
       offered through a personal enquiry.
     </p>
+    </div>
     <hr class="hairline" />
   </Section>
 
-  <Section class="block cc-tight">
-    <div class="section-head">
+  <Section class="block cc-tight u-pt-0">
+    <div class="section-head" data-title-reveal>
       <div>
         <p class="eyebrow">The collection</p>
         <h2 class="h3 u-mb-0">Three ways to discover.</h2>
@@ -93,9 +97,7 @@ const steps = [
               </span>
               <span class="category-card_title">
                 <span>{category.label}</span>
-                <span class="category-card_arrow" aria-hidden="true">
-                  ↗
-                </span>
+                <Icon name="arrow-up-right" class="category-card_arrow" />
               </span>
               <span class="muted cc-sm">{category.description}</span>
             </a>
@@ -106,7 +108,7 @@ const steps = [
   </Section>
 
   <Section class="block">
-    <div class="section-head">
+    <div class="section-head" data-title-reveal>
       <div>
         <p class="eyebrow">A closer look</p>
         <h2 class="h3 u-mb-0">Selected pieces</h2>
@@ -115,9 +117,9 @@ const steps = [
     </div>
     <Row gap="md">
       {
-        featured.map((piece) => (
+        featured.map((product) => (
           <Col lg={4} md={6} xs={12}>
-            <PieceCard piece={piece} />
+            <PieceCard product={product} />
           </Col>
         ))
       }
@@ -131,7 +133,7 @@ const steps = [
         alt="Close view of diamond-cut Georgian glass"
       />
     </div>
-    <div class="focus_copy">
+    <div class="focus_copy" data-title-reveal>
       <p class="eyebrow">In focus / Georgian glass</p>
       <h2 class="focus-title">
         A little light.<br />Two centuries of character.
@@ -148,8 +150,10 @@ const steps = [
   </section>
 
   <Section class="block" id="approach">
-    <p class="eyebrow">A personal way to collect</p>
-    <h2 class="h3">From discovery to enquiry.</h2>
+    <div data-title-reveal>
+      <p class="eyebrow">A personal way to collect</p>
+      <h2 class="h3">From discovery to enquiry.</h2>
+    </div>
     <div class="steps">
       {
         steps.map((step) => (
@@ -164,8 +168,8 @@ const steps = [
     </div>
   </Section>
 
-  <Section class="block cc-tight" id="journal">
-    <div class="section-head">
+  <Section class="block" id="journal">
+    <div class="section-head" data-title-reveal>
       <div>
         <p class="eyebrow">The journal</p>
         <h2 class="h3 u-mb-0">Notes on looking closer.</h2>
@@ -179,7 +183,7 @@ const steps = [
               <a href={`/notes/${note.slug}`} class="editorial-card_media">
                 <img src={note.image} alt={note.imageAlt} />
               </a>
-              <div>
+              <div data-title-reveal>
                 <p class="eyebrow">{note.eyebrow}</p>
                 <h3 class="editorial-title">
                   <a href={`/notes/${note.slug}`}>{note.title}</a>
@@ -195,7 +199,7 @@ const steps = [
   </Section>
 
   <section class="invitation">
-    <div class="container">
+    <div class="container" data-title-reveal>
       <p class="eyebrow">A conversation begins with a piece</p>
       <h2>Something caught your eye?</h2>
       <p class="muted">

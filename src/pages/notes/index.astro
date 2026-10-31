@@ -11,7 +11,7 @@ import { notes } from "@/data/notes";
   title="Collecting notes"
   description="Notes on looking closer — short essays on patina, paintings and living with antiques."
 >
-  <Section class="page-intro">
+  <Section class="page-intro" data-title-reveal>
     <p class="eyebrow">The journal</p>
     <h1 class="h2">Notes on looking closer.</h1>
   </Section>
@@ -24,7 +24,7 @@ import { notes } from "@/data/notes";
               <a href={`/notes/${note.slug}`} class="editorial-card_media">
                 <img src={note.image} alt={note.imageAlt} />
               </a>
-              <div>
+              <div data-title-reveal>
                 <p class="eyebrow">{note.eyebrow}</p>
                 <h2 class="editorial-title">
                   <a href={`/notes/${note.slug}`}>{note.title}</a>

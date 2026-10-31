@@ -18,7 +18,7 @@ if (!noteBySlug(note.slug)) {
 ---
 
 <SiteLayout title={note.title} description={note.description}>
-  <Section class="page-intro">
+  <Section class="page-intro" data-title-reveal>
     <p class="eyebrow">{note.eyebrow}</p>
     <h1 class="h2">{note.title}</h1>
     <p class="muted">{note.description}</p>

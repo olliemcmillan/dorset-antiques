@@ -4,11 +4,7 @@ import Section from "@/components/Section.astro";
 import Catalogue from "@/components/Catalogue.astro";
 import Button from "@/components/Button.astro";
 import Icon from "@/components/Icon.astro";
-import {
-  categories,
-  piecesInCategory,
-  type CategorySlug,
-} from "@/data/catalogue";
+import { categories, getProducts } from "@/lib/products";
 
 export function getStaticPaths() {
   return categories.map((category) => ({
@@ -18,23 +14,25 @@ export function getStaticPaths() {
 }
 
 const { category } = Astro.props;
-const listed = piecesInCategory(category.slug as CategorySlug);
+const listed = (await getProducts()).filter(
+  (product) => product.data.category === category.slug,
+);
 ---
 
 <SiteLayout
   title={category.label}
   description={`${category.description} Browse ${category.label.toLowerCase()} from the Dorset Antiques collection.`}
 >
-  <Section class="page-intro">
+  <Section class="page-intro" data-title-reveal>
     <p class="eyebrow">Dorset Antiques / {category.label}</p>
     <h1 class="h2">{category.label}</h1>
     <p class="muted">{category.description}</p>
   </Section>
-  <Section class="block cc-tight">
-    <Catalogue pieces={listed} category={category.slug} />
+  <Section class="block">
+    <Catalogue products={listed} category={category.slug} />
   </Section>
   <section class="invitation">
-    <div class="container">
+    <div class="container" data-title-reveal>
       <p class="eyebrow">A conversation begins with a piece</p>
       <h2>Something caught your eye?</h2>
       <p class="muted">

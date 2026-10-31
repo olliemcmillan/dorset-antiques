@@ -37,11 +37,14 @@ const fullTitle = title === SITE_TITLE ? title : `${title} · ${SITE_TITLE}`;
   // theme before first paint to avoid a flash of the wrong mode.
   (function () {
     var docEl = document.documentElement;
-    docEl.classList.add("js");
-    function applyMode(isLight) {
-      docEl.classList.toggle("u-mode-light", isLight);
-      docEl.classList.toggle("u-mode-dark", !isLight);
+    function applyDocumentState() {
+      docEl.classList.add("js");
+      docEl.classList.add("u-mode-light");
+      docEl.classList.remove("u-mode-dark");
     }
-    applyMode(true);
+    applyDocumentState();
+    // Client-side navigations replace the html attributes, so restore them.
+    document.addEventListener("astro:after-swap", applyDocumentState);
+    document.addEventListener("astro:page-load", applyDocumentState);
   })();
 </script>

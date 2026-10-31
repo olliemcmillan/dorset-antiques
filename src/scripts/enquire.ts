@@ -17,8 +17,4 @@ function initEnquiry() {
   });
 }
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initEnquiry);
-} else {
-  initEnquiry();
-}
+document.addEventListener("astro:page-load", initEnquiry);

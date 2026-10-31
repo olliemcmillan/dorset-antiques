@@ -3,14 +3,14 @@ import Row from "@/components/Row.astro";
 import Col from "@/components/Col.astro";
 import PieceCard from "@/components/PieceCard.astro";
 import Icon from "@/components/Icon.astro";
-import { categories, type CategorySlug, type Piece } from "@/data/catalogue";
+import { categories, type CategorySlug, type Product } from "@/lib/products";
 
 interface Props {
-  pieces: Piece[];
+  products: Product[];
   category?: CategorySlug;
 }
 
-const { pieces, category } = Astro.props;
+const { products, category } = Astro.props;
 const filters = [
   { href: "/collection", label: "All pieces", slug: undefined },
   ...categories.map((item) => ({
@@ -40,8 +40,8 @@ const categoryName = category
   <div class="catalogue_rule"></div>
   <div class="catalogue_tools">
     <p>
-      {pieces.length}
-      {pieces.length === 1 ? " piece" : " pieces"} / {categoryName}
+      {products.length}
+      {products.length === 1 ? " piece" : " pieces"} / {categoryName}
     </p>
     <label class="catalogue_sort">
       <span class="u-sr-only">Sort pieces</span>
@@ -54,23 +54,23 @@ const categoryName = category
   </div>
   <Row gap="md" class="catalogue_grid">
     {
-      pieces.map((piece, index) => (
+      products.map((product, index) => (
         <Col
           lg={4}
           md={6}
           xs={12}
           data-piece
           data-order={index}
-          data-title={piece.title}
+          data-title={product.data.title}
         >
-          <PieceCard piece={piece} />
+          <PieceCard product={product} />
         </Col>
       ))
     }
   </Row>
   <p class="catalogue_end">
-    You’ve viewed all {pieces.length}
-    {pieces.length === 1 ? " piece" : " pieces"}.
+    You’ve viewed all {products.length}
+    {products.length === 1 ? " piece" : " pieces"}.
   </p>
 </div>
 

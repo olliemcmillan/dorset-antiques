@@ -4,7 +4,11 @@
  * another the first time the element scrolls into view. Respects
  * prefers-reduced-motion (handled in CSS).
  */
+let staggerObserver: IntersectionObserver | undefined;
+
 function initStaggerAnimations() {
+  staggerObserver?.disconnect();
+
   const elements = document.querySelectorAll<HTMLElement>(
     '[data-animate="stagger-children"]',
   );
@@ -25,23 +29,19 @@ function initStaggerAnimations() {
     return;
   }
 
-  const observer = new IntersectionObserver(
+  staggerObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           reveal(entry.target as HTMLElement);
-          observer.unobserve(entry.target);
+          staggerObserver?.unobserve(entry.target);
         }
       });
     },
     { rootMargin: "0px 0px -5% 0px" },
   );
 
-  elements.forEach((element) => observer.observe(element));
+  elements.forEach((element) => staggerObserver?.observe(element));
 }
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initStaggerAnimations);
-} else {
-  initStaggerAnimations();
-}
+document.addEventListener("astro:page-load", initStaggerAnimations);

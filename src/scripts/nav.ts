@@ -3,8 +3,13 @@
  * Replaces the Webflow nav/dropdown runtime with a small vanilla port.
  */
 let navUid = 0;
+let navController: AbortController | undefined;
 
 function initNav() {
+  navController?.abort();
+  navController = new AbortController();
+  const { signal } = navController;
+
   const navs = document.querySelectorAll<HTMLElement>(".nav");
   if (!navs.length) return;
 
@@ -23,9 +28,13 @@ function initNav() {
         menuBtn.setAttribute("aria-controls", menu.id);
       }
       setMenuState(false);
-      menuBtn.addEventListener("click", () => {
-        setMenuState(nav.classList.toggle("cc-open"));
-      });
+      menuBtn.addEventListener(
+        "click",
+        () => {
+          setMenuState(nav.classList.toggle("cc-open"));
+        },
+        { signal },
+      );
     }
 
     const dropdowns = nav.querySelectorAll<HTMLElement>(".nav-dropdown");
@@ -47,34 +56,42 @@ function initNav() {
       toggle.setAttribute("aria-haspopup", "true");
       toggle.setAttribute("aria-expanded", "false");
 
-      toggle.addEventListener("click", (e) => {
-        e.preventDefault();
-        const open = dropdown.classList.toggle("cc-open");
-        toggle.setAttribute("aria-expanded", String(open));
-        closeDropdowns(dropdown);
-      });
+      toggle.addEventListener(
+        "click",
+        (e) => {
+          e.preventDefault();
+          const open = dropdown.classList.toggle("cc-open");
+          toggle.setAttribute("aria-expanded", String(open));
+          closeDropdowns(dropdown);
+        },
+        { signal },
+      );
     });
 
-    document.addEventListener("click", (e) => {
-      if (!(e.target instanceof Node) || !nav.contains(e.target)) {
+    document.addEventListener(
+      "click",
+      (e) => {
+        if (!(e.target instanceof Node) || !nav.contains(e.target)) {
+          closeDropdowns();
+        }
+      },
+      { signal },
+    );
+
+    document.addEventListener(
+      "keydown",
+      (e) => {
+        if (e.key !== "Escape") return;
         closeDropdowns();
-      }
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key !== "Escape") return;
-      closeDropdowns();
-      if (nav.classList.contains("cc-open")) {
-        nav.classList.remove("cc-open");
-        setMenuState(false);
-        menuBtn?.focus();
-      }
-    });
+        if (nav.classList.contains("cc-open")) {
+          nav.classList.remove("cc-open");
+          setMenuState(false);
+          menuBtn?.focus();
+        }
+      },
+      { signal },
+    );
   });
 }
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initNav);
-} else {
-  initNav();
-}
+document.addEventListener("astro:page-load", initNav);

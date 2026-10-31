@@ -6,78 +6,85 @@ import Col from "@/components/Col.astro";
 import Button from "@/components/Button.astro";
 import Icon from "@/components/Icon.astro";
 import PieceCard from "@/components/PieceCard.astro";
+import { render } from "astro:content";
 import {
   availabilityLabel,
   categoryLabel,
   deliveryNote,
-  pieces,
-  relatedPieces,
-} from "@/data/catalogue";
+  getProducts,
+  productSrc,
+  relatedProducts,
+} from "@/lib/products";
 
-export function getStaticPaths() {
-  return pieces.map((piece) => ({
-    params: { slug: piece.slug },
-    props: { piece },
+export async function getStaticPaths() {
+  const products = await getProducts();
+  return products.map((product) => ({
+    params: { slug: product.id },
+    props: { product },
   }));
 }
 
-const { piece } = Astro.props;
-const related = relatedPieces(piece.slug);
-const enquiryHref = `/enquire/${piece.reference.toLowerCase()}`;
+const { product } = Astro.props;
+const { Content } = await render(product);
+const related = relatedProducts(await getProducts(), product.id);
+const enquiryHref = `/enquire/${product.data.reference.toLowerCase()}`;
+const { data } = product;
 ---
 
-<SiteLayout title={piece.title} description={piece.description}>
+<SiteLayout title={data.title} description={data.description}>
   <Section class="block">
     <p class="breadcrumb">
       <a href="/collection">Collection</a>
       <span aria-hidden="true"> / </span>
-      <a href={`/collection/${piece.category}`}>
-        {categoryLabel(piece.category)}
+      <a href={`/collection/${data.category}`}>
+        {categoryLabel(data.category)}
       </a>
       <span aria-hidden="true"> / </span>
-      <span>{piece.title}</span>
+      <span>{data.title}</span>
     </p>
     <div class="piece-layout">
       <div class="piece-gallery">
         <img
           class="piece-gallery_main"
-          src={piece.gallery[0].src}
-          alt={piece.gallery[0].alt}
+          src={productSrc(data.gallery[0].image)}
+          alt={data.gallery[0].alt}
           fetchpriority="high"
         />
         {
-          piece.gallery.length > 1 && (
+          data.gallery.length > 1 && (
             <div class="piece-gallery_details">
-              {piece.gallery.slice(1).map((image) => (
+              {data.gallery.slice(1).map((image) => (
                 <div class="piece-gallery_detail">
-                  <img src={image.src} alt={image.alt} />
+                  <img src={productSrc(image.image)} alt={image.alt} />
                 </div>
               ))}
             </div>
           )
         }
         {
-          piece.galleryCaption && (
+          data.galleryCaption && (
             <div class="gallery-caption">
-              <p>{piece.galleryCaption}</p>
-              <p>{piece.gallery.length} photographs</p>
+              <p>{data.galleryCaption}</p>
+              <p>{data.gallery.length} photographs</p>
             </div>
           )
         }
       </div>
-      <div>
+      <div data-title-reveal>
         <p class="eyebrow">
-          {categoryLabel(piece.category)} / {piece.reference}
+          {categoryLabel(data.category)} / {data.reference}
         </p>
-        <h1 class="piece-title">{piece.title}</h1>
-        <p class="piece-summary">{piece.summary}</p>
-        <p class:list={["availability", `cc-${piece.availability}`]}>
+        <h1 class="piece-title">{data.title}</h1>
+        <p class="piece-summary">{data.summary}</p>
+        <p class:list={["availability", `cc-${data.availability}`]}>
           <span class="availability_marker" aria-hidden="true"></span>
-          {availabilityLabel[piece.availability]}
+          {availabilityLabel[data.availability]}
         </p>
         <hr class="hairline" />
         <p class="piece-price">Price on enquiry</p>
-        <p class="muted stack">{piece.description}</p>
+        <div class="rich-text muted stack">
+          <Content />
+        </div>
         <div class="stack-lg">
           <Button href={enquiryHref} full>
             Enquire about this piece
@@ -90,7 +97,7 @@ const enquiryHref = `/enquire/${piece.reference.toLowerCase()}`;
         </p>
         <dl class="piece-facts">
           {
-            piece.facts.map((fact) => (
+            data.facts.map((fact) => (
               <div>
                 <dt>{fact.label}</dt>
                 <dd>{fact.value}</dd>
@@ -101,32 +108,34 @@ const enquiryHref = `/enquire/${piece.reference.toLowerCase()}`;
       </div>
     </div>
 
-    <div class="note-block">
+    <div class="note-block" data-title-reveal>
       <p class="eyebrow">Condition & character</p>
-      <p class="muted">{piece.condition}</p>
+      <p class="muted">{data.condition}</p>
     </div>
-    <div class="note-block">
+    <div class="note-block" data-title-reveal>
       <p class="eyebrow">Delivery & collection</p>
       <p class="muted">{deliveryNote}</p>
     </div>
 
     {
-      piece.history && (
+      data.history && (
         <div class="note-block history-intro">
+          <div data-title-reveal>
           <p class="eyebrow">Illustrative sample history</p>
           <h2>A sample timeline of the piece</h2>
           <p class="muted">
             This is a narrative interpretation of the object’s journey. Verified
-            provenance was not supplied for {piece.reference}, so the timeline
+            provenance was not supplied for {data.reference}, so the timeline
             below is illustrative rather than documented fact. It is intended to
             evoke the kind of story an object like this might carry.
           </p>
+          </div>
           <div class="timeline">
-            {piece.history.map((moment, index) => (
+            {data.history.map((moment, index) => (
               <article class="timeline_row">
                 <div class="timeline_mark" aria-hidden="true">
                   <span class="timeline_dot" />
-                  {index < piece.history!.length - 1 && (
+                  {index < data.history!.length - 1 && (
                     <span class="timeline_line" />
                   )}
                 </div>
@@ -134,7 +143,7 @@ const enquiryHref = `/enquire/${piece.reference.toLowerCase()}`;
                   <p class="eyebrow timeline_when">{moment.when}</p>
                   <h3 class="h4">{moment.title}</h3>
                   <p class="muted">{moment.body}</p>
-                  {index === piece.history!.length - 1 && (
+                  {index === data.history!.length - 1 && (
                     <div class="stack-sm">
                       <Button href={enquiryHref} full>
                         Enquire about becoming the next custodian
@@ -157,7 +166,7 @@ const enquiryHref = `/enquire/${piece.reference.toLowerCase()}`;
       {
         related.map((item) => (
           <Col lg={4} md={6} xs={12}>
-            <PieceCard piece={item} />
+            <PieceCard product={item} />
           </Col>
         ))
       }
