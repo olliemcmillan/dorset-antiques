@@ -506,6 +506,7 @@ h6,
 .steps {
   display: grid;
   gap: 2rem;
+  margin-top: 2rem;
 }
 
 .step {
@@ -1063,6 +1064,10 @@ textarea.input:focus-visible,
   font-size: 0.75rem;
   line-height: 1.65;
   margin: 0;
+}
+
+.form-note.stack {
+  margin-top: 1.25rem;
 }
 
 .form-note a {
